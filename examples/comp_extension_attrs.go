@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	jamf "github.com/DataDog/jamf-api-client-go/classic"
+	jamf "github.com/intersticelabs/jamf-api-client-go/classic"
 )
 
 func checkAndHandleErr(err error) {

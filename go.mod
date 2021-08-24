@@ -1,4 +1,4 @@
-module github.com/DataDog/jamf-api-client-go
+module github.com/intersticelabs/jamf-api-client-go
 
 go 1.13
 
