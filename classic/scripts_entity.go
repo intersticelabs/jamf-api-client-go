@@ -16,7 +16,7 @@ type BasicScriptInfo struct {
 	Name string `json:"name"`
 }
 
-// Script holds the details to a specific script queried by ID
+// Script holds the details to a specific script queried by Id
 type Script struct {
 	Content *ScriptContents `json:"script" xml:"script,omitempty"`
 }

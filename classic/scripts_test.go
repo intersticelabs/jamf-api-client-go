@@ -74,7 +74,7 @@ func scriptsResponseMocks(t *testing.T) *httptest.Server {
 						Name:            "Zoom Script 2",
 						Category:        "No category assigned",
 						Priority:        "After",
-						Contents:        "#!/bin/bash\n#Get latest version from Jamf UI Parameters\nZoom_Target_Version=\"$4\"\necho $Zoom_Target_Version",
+						Contents:        "#!/bin/bash\n#GetById latest version from Jamf UI Parameters\nZoom_Target_Version=\"$4\"\necho $Zoom_Target_Version",
 						EncodedContents: "IyEvYmluL2Jhc2gKI0dlQ==",
 					},
 				}

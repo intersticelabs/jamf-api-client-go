@@ -1,6 +1,6 @@
 // Unless explicitly stated otherwise all files in this repository are licensed under the Apache-2.0
 // This product includes software developed at Datadog (https://www.datadoghq.com/). Copyright 2020 Datadog, Inc.
-package classic_test
+package computers_test
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic"
+	jamf "github.com/intersticelabs/jamf-api-client-go/classic/computers"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -52,7 +52,7 @@ func computerResponseMocks(t *testing.T) *httptest.Server {
 				"computer": {
 					"general": {
 						"id": 82,
-						"name": "Go Client Test Machine",
+						"name": "Go Service Test Machine",
 						"mac_address": "00:00:00:A0:FE:00",
 						"serial_number": "VM0L+J/0cr+l",
 						"udid": "000DF0BF-00FF-D00B-FA00-000F0DA0FE00",
@@ -135,7 +135,7 @@ func computerResponseMocks(t *testing.T) *httptest.Server {
 						],
 						"groups_accounts": {
 							"computer_group_memberships": [
-								"Test Group for API Client"
+								"Test Group for API Service"
 							],
 							"local_accounts": [{
 								"name": "test.user",
@@ -164,60 +164,60 @@ func computerResponseMocks(t *testing.T) *httptest.Server {
 func TestQueryComputer(t *testing.T) {
 	testServer := computerResponseMocks(t)
 	defer testServer.Close()
-	j, err := jamf.NewClient(testServer.URL, "fake-username", "mock-password-cool", nil)
+	j, err := jamf.NewService(testServer.URL, "fake-username", "mock-password-cool", nil)
 	assert.Nil(t, err)
-	computers, err := j.Computers()
+	computers, err := j.List()
 	assert.Nil(t, err)
 	assert.NotNil(t, computers)
 	assert.Equal(t, 6, len(computers))
-	assert.Equal(t, 3, computers[0].ID)
+	assert.Equal(t, 3, computers[0].Id)
 	assert.Equal(t, "Test MacBook #3", computers[0].Name)
 }
 
 func TestQuerySpecificComputer(t *testing.T) {
 	testServer := computerResponseMocks(t)
 	defer testServer.Close()
-	j, err := jamf.NewClient(testServer.URL, "fake-username", "mock-password-cool", nil)
+	j, err := jamf.NewService(testServer.URL, "fake-username", "mock-password-cool", nil)
 	assert.Nil(t, err)
-	computer, err := j.ComputerDetails(82)
+	computer, err := j.GetById(82)
 	assert.Nil(t, err)
 	// General Info
-	assert.Equal(t, 82, computer.Info.General.ID)
-	assert.Equal(t, "Go Client Test Machine", computer.Info.General.Name)
-	assert.Equal(t, false, computer.Info.General.MDMCapable)
+	assert.Equal(t, 82, computer.General.Id)
+	assert.Equal(t, "Go Service Test Machine", computer.General.Name)
+	assert.Equal(t, false, computer.General.MDMCapable)
 
 	// User & Location Info
-	assert.Equal(t, "Test User", computer.Info.UserLocation.RealName)
-	assert.Equal(t, "test.user@email.com", computer.Info.UserLocation.EmailAddress)
-	assert.Equal(t, "Software Engineer", computer.Info.UserLocation.Position)
-	assert.Equal(t, "Engineering", computer.Info.UserLocation.Department)
+	assert.Equal(t, "Test User", computer.UserLocation.RealName)
+	assert.Equal(t, "test.user@email.com", computer.UserLocation.EmailAddress)
+	assert.Equal(t, "Software Engineer", computer.UserLocation.Position)
+	assert.Equal(t, "Engineering", computer.UserLocation.Department)
 
 	// Hardware info
-	assert.Equal(t, "Apple", computer.Info.Hardware.Make)
-	assert.Equal(t, "App Store and identified developers", computer.Info.Hardware.GatekeeperStatus)
-	assert.Equal(t, "Enabled", computer.Info.Hardware.SIPStatus)
-	assert.Equal(t, []string{"test.user"}, computer.Info.Hardware.FilevaultUsers)
+	assert.Equal(t, "Apple", computer.Hardware.Make)
+	assert.Equal(t, "App Store and identified developers", computer.Hardware.GatekeeperStatus)
+	assert.Equal(t, "Enabled", computer.Hardware.SIPStatus)
+	assert.Equal(t, []string{"test.user"}, computer.Hardware.FilevaultUsers)
 
 	// Certificate Information
-	assert.Equal(t, "JSS Built-in Certificate Authority", computer.Info.Certificates[0].CommonName)
+	assert.Equal(t, "JSS Built-in Certificate Authority", computer.Certificates[0].CommonName)
 
 	// Software Information
-	assert.Equal(t, []string{"filevault_profile_signed.pkg", "Zoom-Latest.pkg"}, computer.Info.Software.InstalledByCasper)
-	assert.Equal(t, "com.apple.accessoryd", computer.Info.Software.RunningServices[0])
-	assert.Equal(t, "Datadog Agent.app", computer.Info.Software.Applications[0].Name)
+	assert.Equal(t, []string{"filevault_profile_signed.pkg", "Zoom-Latest.pkg"}, computer.Software.InstalledByCasper)
+	assert.Equal(t, "com.apple.accessoryd", computer.Software.RunningServices[0])
+	assert.Equal(t, "Datadog Agent.app", computer.Software.Applications[0].Name)
 
 	// Extension Attributes
-	assert.Equal(t, 6, computer.Info.ExtensionAttributes[0].ID)
-	assert.Equal(t, "osquery Status", computer.Info.ExtensionAttributes[0].Name)
-	assert.Equal(t, "OSquery NOT Running", computer.Info.ExtensionAttributes[0].Value)
+	assert.Equal(t, 6, computer.ExtensionAttributes[0].ID)
+	assert.Equal(t, "osquery Status", computer.ExtensionAttributes[0].Name)
+	assert.Equal(t, "OSquery NOT Running", computer.ExtensionAttributes[0].Value)
 
 	// Group Memberships & Local Accounts
-	assert.Equal(t, []string{"Test Group for API Client"}, computer.Info.Groups.Memberships)
-	assert.Equal(t, "test.user", computer.Info.Groups.LocalAccounts[0].Name)
-	assert.Equal(t, true, computer.Info.Groups.LocalAccounts[0].Administrator)
+	assert.Equal(t, []string{"Test Group for API Service"}, computer.Groups.Memberships)
+	assert.Equal(t, "test.user", computer.Groups.LocalAccounts[0].Name)
+	assert.Equal(t, true, computer.Groups.LocalAccounts[0].Administrator)
 
 	// Config Profiles
-	assert.Equal(t, 2, computer.Info.ConfigProfiles[0].ID)
-	assert.Equal(t, "Test Config Profile", computer.Info.ConfigProfiles[0].Name)
-	assert.Equal(t, false, computer.Info.ConfigProfiles[0].Removable)
+	assert.Equal(t, 2, computer.ConfigProfiles[0].ID)
+	assert.Equal(t, "Test Config Profile", computer.ConfigProfiles[0].Name)
+	assert.Equal(t, false, computer.ConfigProfiles[0].Removable)
 }

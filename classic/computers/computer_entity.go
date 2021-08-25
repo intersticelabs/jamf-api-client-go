@@ -1,9 +1,14 @@
 // Unless explicitly stated otherwise all files in this repository are licensed under the Apache-2.0
 // This product includes software developed at Datadog (https://www.datadoghq.com/). Copyright 2020 Datadog, Inc.
 
-package classic
+package computers
 
 import "encoding/xml"
+
+type ComputerNameId struct {
+	Id   int    `json:"id,omitempty" xml:"id,omitempty"`
+	Name string `json:"name,omitempty" xml:"name,omitempty"`
+}
 
 // Computers represents a list of computers enrolled in Jamf
 type Computers struct {
@@ -23,23 +28,22 @@ type BasicComputerInfo struct {
 }
 
 // Computer represents an individual computer enrolled in Jamf with all its associated information
+
 type Computer struct {
-	Info struct {
-		General             GeneralInformation       `json:"general"`
-		UserLocation        LocationInformation      `json:"location"`
-		Hardware            HardwareInformation      `json:"hardware"`
-		Certificates        []CertificateInformation `json:"certificates"`
-		Software            SoftwareInformation      `json:"software"`
-		ExtensionAttributes []ExtensionAttributes    `json:"extension_attributes"`
-		Groups              GroupInformation         `json:"groups_accounts"`
-		ConfigProfiles      []ConfigProfile          `json:"configuration_profiles"`
-	} `json:"computer"`
+	General             GeneralInformation       `json:"general"`
+	UserLocation        LocationInformation      `json:"location"`
+	Hardware            HardwareInformation      `json:"hardware"`
+	Certificates        []CertificateInformation `json:"certificates"`
+	Software            SoftwareInformation      `json:"software"`
+	ExtensionAttributes []ExtensionAttributes    `json:"extension_attributes"`
+	Groups              GroupInformation         `json:"groups_accounts"`
+	ConfigProfiles      []ConfigProfile          `json:"configuration_profiles"`
 }
 
 // GeneralInformation holds basic information associated with Jamf device
 type GeneralInformation struct {
 	XMLName      xml.Name `json:"-" xml:"computer,omitempty"`
-	ID           int      `json:"id,omitempty" xml:"id,omitempty"`
+	Id           int      `json:"id,omitempty" xml:"id,omitempty"`
 	Name         string   `json:"name" xml:"name,omitempty"`
 	MACAddress   string   `json:"mac_address" xml:"mac_address,omitempty"`
 	SerialNumber string   `json:"serial_number" xml:"serial_number,omitempty"`
@@ -62,14 +66,67 @@ type LocationInformation struct {
 
 // HardwareInformation holds the hardware specific device information
 type HardwareInformation struct {
-	Make             string   `json:"make"`
-	OSName           string   `json:"os_name"`
-	OSVersion        string   `json:"os_version"`
-	OSBuild          string   `json:"os_build"`
-	SIPStatus        string   `json:"sip_status"`
-	GatekeeperStatus string   `json:"gatekeeper_status"`
-	XProtectVersion  string   `json:"xprotect_version"`
-	FilevaultUsers   []string `json:"filevault2_users"`
+	Make                        string    `json:"make"`
+	Model                       string    `json:"model"`
+	ModelIdentifier             string    `json:"model_identifier"`
+	OSName                      string    `json:"os_name"`
+	OSVersion                   string    `json:"os_version"`
+	OSBuild                     string    `json:"os_build"`
+	MasterPasswordSet           bool      `json:"master_password_set"`
+	ActiveDirectoryStatus       string    `json:"active_directory_status"`
+	ServicePack                 string    `json:"service_pack"`
+	ProcessorType               string    `json:"processor_type"`
+	ProcessorArchitecture       string    `json:"processor_architecture"`
+	ProcessorSpeed              int      `json:"processor_speed"`
+	ProcessorSpeedMhz           int      `json:"processor_speed_mhz"`
+	NumberProcessors            int      `json:"number_processors"`
+	NumberCores                 int      `json:"number_cores"`
+	TotalRam                    int64    `json:"total_ram"`
+	TotalRamMb                  int64    `json:"total_ram_mb"`
+	BootRom                     string    `json:"boot_rom"`
+	BusSpeed                    int      `json:"bus_speed"`
+	BusSpeedMhz                 int      `json:"bus_speed_mhz"`
+	BatteryCapacity             int      `json:"battery_capacity"`
+	CacheSize                   int64    `json:"cache_size"`
+	CacheSizeKb                 int64    `json:"cache_size_kb"`
+	SIPStatus                   string    `json:"sip_status"`
+	GatekeeperStatus            string    `json:"gatekeeper_status"`
+	XProtectVersion             string    `json:"xprotect_version"`
+	InstitutionalRecoveryKey    string    `json:"institutional_recovery_key"`
+	FilevaultUsers              []string  `json:"filevault2_users"`
+	DiskEncryptionConfiguration string    `json:"disk_encryption_configuration"`
+	Storage                     []Storage `json:"storage"`
+}
+
+type Storage struct {
+	Device Device `json:"device"`
+}
+
+type Device struct {
+	Disk            string      `json:"disk"`
+	Model           string      `json:"model"`
+	Revision        string      `json:"revision"`
+	SerialNumber    string      `json:"serial_number"`
+	Size            int64      `json:"size"`
+	DriveCapacityMB int64      `json:"drive_capacity_mb"`
+	ConnectionType  string      `json:"connection_type"`
+	SmartStatus     string      `json:"smart_status"`
+	Partition       []Partition `json:"partition"`
+}
+type Partition struct {
+	Name                 string `json:"name"`
+	Size                 int64  `json:"size"`
+	PartitionType        string `json:"type"`
+	PartitionCapacityMB  int64 `json:"partition_capacity_mb"`
+	PercentageFull       int   `json:"percentage_full"`
+	FilevaultStatus      string `json:"filevault_status"`
+	FilevaultPercent     int   `json:"filevault_percent"`
+	Filevault2Status     string `json:"filevault2_status"`
+	Filevaul2tPercent    int   `json:"filevault2_percent"`
+	BootDriveAvailableMB int64 `json:"boot_drive_available_mb"`
+	LvgUUID              string `json:"lvg_uuid"`
+	LvUUID               string `json:"lv_uuid"`
+	PvUUID               string `json:"pv_uuid"`
 }
 
 // CertificateInformation holds information about certs intalled on the device

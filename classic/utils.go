@@ -19,7 +19,7 @@ func JSONPrettyPrint(input []byte) string {
 	return out.String()
 }
 
-// EndpointBuilder can be utilized to query a specific API context via either name or ID
+// EndpointBuilder can be utilized to query a specific API context via either name or Id
 func EndpointBuilder(endpoint string, context string, identifier interface{}) (string, error) {
 	var ep string
 	switch identifier.(type) {
@@ -32,3 +32,4 @@ func EndpointBuilder(endpoint string, context string, identifier interface{}) (s
 	}
 	return ep, nil
 }
+

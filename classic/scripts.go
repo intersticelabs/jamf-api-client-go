@@ -14,7 +14,7 @@ import (
 )
 
 // Scripts returns a list of scripts available in the jamf client
-func (j *Client) Scripts() ([]BasicScriptInfo, error) {
+func (j *Service) Scripts() ([]BasicScriptInfo, error) {
 	ep := fmt.Sprintf("%s/%s", j.Endpoint, scriptsContext)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
 	if err != nil {
@@ -27,8 +27,8 @@ func (j *Client) Scripts() ([]BasicScriptInfo, error) {
 	return res.List, nil
 }
 
-// ScriptDetails returns the details for a specific script given its ID or Name
-func (j *Client) ScriptDetails(identifier interface{}) (*Script, error) {
+// ScriptDetails returns the details for a specific script given its Id or Name
+func (j *Service) ScriptDetails(identifier interface{}) (*Script, error) {
 	ep, err := EndpointBuilder(j.Endpoint, scriptsContext, identifier)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error building JAMF query request endpoint for script: %v", identifier)
@@ -41,7 +41,7 @@ func (j *Client) ScriptDetails(identifier interface{}) (*Script, error) {
 
 	res := Script{}
 	if err := j.makeAPIrequest(req, &res); err != nil {
-		return nil, errors.Wrapf(err, "unable to query script with ID: %d from %s", identifier, ep)
+		return nil, errors.Wrapf(err, "unable to query script with Id: %d from %s", identifier, ep)
 	}
 
 	// default to map for script parameters
@@ -52,8 +52,8 @@ func (j *Client) ScriptDetails(identifier interface{}) (*Script, error) {
 	return &res, nil
 }
 
-// UpdateScript will update a script in Jamf by either ID or Name
-func (j *Client) UpdateScript(identifier interface{}, script *ScriptContents) (*ScriptContents, error) {
+// UpdateScript will update a script in Jamf by either Id or Name
+func (j *Service) UpdateScript(identifier interface{}, script *ScriptContents) (*ScriptContents, error) {
 	ep, err := EndpointBuilder(j.Endpoint, scriptsContext, identifier)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error building JAMF query request for script: %v", identifier)
@@ -87,8 +87,8 @@ func (j *Client) UpdateScript(identifier interface{}, script *ScriptContents) (*
 }
 
 // CreateScript will create a script in Jamf
-func (j *Client) CreateScript(content *ScriptContents) (*ScriptContents, error) {
-	// -1 denotes the next available ID
+func (j *Service) CreateScript(content *ScriptContents) (*ScriptContents, error) {
+	// -1 denotes the next available Id
 	ep, err := EndpointBuilder(j.Endpoint, scriptsContext, -1)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error building JAMF query request for new script")
@@ -125,8 +125,8 @@ func (j *Client) CreateScript(content *ScriptContents) (*ScriptContents, error) 
 	return &res, nil
 }
 
-// DeleteScript will delete a script by either ID or Name
-func (j *Client) DeleteScript(identifier interface{}) (*ScriptContents, error) {
+// DeleteScript will delete a script by either Id or Name
+func (j *Service) DeleteScript(identifier interface{}) (*ScriptContents, error) {
 	ep, err := EndpointBuilder(j.Endpoint, scriptsContext, identifier)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error building JAMF query request for script: %v", identifier)

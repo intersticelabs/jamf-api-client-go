@@ -1,13 +1,15 @@
 // Unless explicitly stated otherwise all files in this repository are licensed under the Apache-2.0
 // This product includes software developed at Datadog (https://www.datadoghq.com/). Copyright 2020 Datadog, Inc.
 
-package classic
+package policies
+
+import "github.com/intersticelabs/jamf-api-client-go/classic/computers"
 
 // Scope represents the scope of a related Jamf configuration setting or Policy
 type Scope struct {
 	AllComputers   bool                  `json:"all_computers" xml:"all_computers,omitempty"`
-	Computers      []*BasicComputerInfo  `json:"computers" xml:"computers>computer,omitempty"`
-	ComputerGroups []*ComputerGroup      `json:"computer_groups" xml:"computer_groups>computer_group,omitempty"`
+	Computers      []*computers.BasicComputerInfo  `json:"computers" xml:"computers>computer,omitempty"`
+	ComputerGroups []*computers.ComputerGroup      `json:"computer_groups" xml:"computer_groups>computer_group,omitempty"`
 	Buildings      []*Building           `json:"buildings" xml:"buildings,omitempty"`
 	Departments    []*Department         `json:"departments" xml:"departments,omitempty"`
 	LimitToUsers   *UserGroupLimitations `json:"limit_to_users" xml:"limit_to_users,omitempty"`
@@ -69,8 +71,8 @@ type Limitations struct {
 
 // Exclusions represents any exclusions applied to the scoping of the Jamf setting in context
 type Exclusions struct {
-	Computers       []*BasicComputerInfo `json:"computers"`
-	ComputerGroups  []*ComputerGroup     `json:"computer_groups"`
+	Computers       []*computers.BasicComputerInfo `json:"computers"`
+	ComputerGroups  []*computers.ComputerGroup     `json:"computer_groups"`
 	Buildings       []*Building          `json:"buildings"`
 	Departments     []*Department        `json:"departments"`
 	Users           []*User              `json:"users"`

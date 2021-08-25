@@ -1,7 +1,7 @@
 // Unless explicitly stated otherwise all files in this repository are licensed under the Apache-2.0
 // This product includes software developed at Datadog (https://www.datadoghq.com/). Copyright 2020 Datadog, Inc.
 
-package classic
+package client
 
 import (
 	"encoding/json"
@@ -18,12 +18,14 @@ import (
 
 const (
 	scriptsContext         = "scripts"
+	ComputersContext       = "computers"
 	computerExtAttrContext = "computerextensionattributes"
+	policiesContext        = "policies"
 )
 
-// Service represents the interface used to communicate with
+// Client represents the interface used to communicate with
 // the Jamf API via an HTTP client
-type Service struct {
+type Client struct {
 	Domain   string
 	Username string
 	Password string
@@ -32,54 +34,54 @@ type Service struct {
 	Api      *http.Client
 }
 
-// Used if custom client not passed on when NewClient instantiated
+// Used if custom client not passed on when NewDomainClient instantiated
 func DefaultHTTPClient() *http.Client {
 	return &http.Client{
 		Timeout: time.Minute,
 	}
 }
 
-// NewClient returns a new Jamf HTTP client to be used for API requests
-func NewClient(domain string, username string, password string, client *http.Client) (*Service, error) {
-	if domain == "" || username == "" || password == "" {
-		return nil, errors.New("you must provide a valid Jamf domain, username, and password")
+// NewDomainClient returns a new Jamf HTTP client to be used for API requests
+func NewDomainClient(baseUrl string, domain string, username string, password string, client *http.Client) (*Client, error) {
+	if baseUrl == "" || username == "" || password == "" {
+		return nil, errors.New("you must provide a valid Jamf base url, username, and password")
 	}
 
 	if client == nil {
 		client = DefaultHTTPClient()
 	}
 
-	return &Service{
-		Domain:   domain,
+	return &Client{
+		Domain:   baseUrl,
 		Username: username,
 		Password: password,
-		Endpoint: fmt.Sprintf("%s/JSSResource", domain),
+		Endpoint: fmt.Sprintf("%s/JSSResource/%s", baseUrl, domain),
 		Api:      client,
 	}, nil
 }
 
-func (j *Service) makeAPIrequest(r *http.Request, v interface{}) error {
+func (j *Client) makeAPIrequest(r *http.Request, v interface{}) error {
 	return MakeAPIrequest(j, r, v)
 }
 
 // MockAPIRequest is used for testing the API client
-func (j *Service) MockAPIRequest(r *http.Request, v interface{}) (*http.Request, error) {
+func (j *Client) MockAPIRequest(r *http.Request, v interface{}) (*http.Request, error) {
 	r.Header.Set("Accept", "application/json,  application/xml;q=0.9")
 	r.SetBasicAuth(j.Username, j.Password)
 	return r, j.makeAPIrequest(r, v)
 }
 
 // EndpointBuilder can be utilized to query a specific API context via name
-func (j *Service) NameEndpoint(identifier string) string {
+func (j *Client) NameEndpoint(identifier string) string {
 	return fmt.Sprintf("%s/name/%s", j.Endpoint, identifier)
 }
 
 // EndpointBuilder can be utilized to query a specific API context via Id
-func (j *Service) IdEndpoint(identifier int) string {
+func (j *Client) IdEndpoint(identifier int) string {
 	return fmt.Sprintf("%s/id/%d", j.Endpoint, identifier)
 }
 
-func MakeAPIrequest(j *Service, r *http.Request, v interface{}) error {
+func MakeAPIrequest(j *Client, r *http.Request, v interface{}) error {
 	// Jamf API only sends XML for some endpoints so we will accept both but prioritize
 	// JSON responses with the quallity value of 1.0 and 0.9 for XML responses
 	// https://developer.mozilla.org/en-US/docs/Glossary/quality_values
