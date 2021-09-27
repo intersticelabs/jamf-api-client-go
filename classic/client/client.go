@@ -60,7 +60,7 @@ func NewDomainClient(baseUrl string, domain string, username string, password st
 	}, nil
 }
 
-func (j *Client) makeAPIrequest(r *http.Request, v interface{}) error {
+func (j *Client) makeAPIrequest(r *http.Request, v interface{}) (*http.Response, error) {
 	return MakeAPIrequest(j, r, v)
 }
 
@@ -68,7 +68,8 @@ func (j *Client) makeAPIrequest(r *http.Request, v interface{}) error {
 func (j *Client) MockAPIRequest(r *http.Request, v interface{}) (*http.Request, error) {
 	r.Header.Set("Accept", "application/json,  application/xml;q=0.9")
 	r.SetBasicAuth(j.Username, j.Password)
-	return r, j.makeAPIrequest(r, v)
+	_, err := j.makeAPIrequest(r, v)
+	return r, err
 }
 
 // EndpointBuilder can be utilized to query a specific API context via name
@@ -81,7 +82,7 @@ func (j *Client) IdEndpoint(identifier int) string {
 	return fmt.Sprintf("%s/id/%d", j.Endpoint, identifier)
 }
 
-func MakeAPIrequest(j *Client, r *http.Request, v interface{}) error {
+func MakeAPIrequest(j *Client, r *http.Request, v interface{}) (*http.Response, error) {
 	// Jamf API only sends XML for some endpoints so we will accept both but prioritize
 	// JSON responses with the quallity value of 1.0 and 0.9 for XML responses
 	// https://developer.mozilla.org/en-US/docs/Glossary/quality_values
@@ -92,17 +93,18 @@ func MakeAPIrequest(j *Client, r *http.Request, v interface{}) error {
 
 	res, err := j.Api.Do(r)
 	if err != nil {
-		return errors.Wrapf(err, "error making %s request to %s", r.Method, r.URL)
+		return res, errors.Wrapf(err, "error making %s request to %s", r.Method, r.URL)
 	}
 	defer res.Body.Close()
 
 	// If status code is not ok attempt to read the response in plain text
 	if res.StatusCode != 200 && res.StatusCode != 201 {
-		responseData, err := ioutil.ReadAll(res.Body)
+		var responseData []byte
+		responseData, err = ioutil.ReadAll(res.Body)
 		if err != nil {
-			return errors.Wrapf(err, "request error: %s. unable to retrieve plain text response: %s", res.Status, err.Error())
+			return res, errors.Wrapf(err, "request error: %s. unable to retrieve plain text response: %s", res.Status, err.Error())
 		}
-		return fmt.Errorf("request error: %s", string(responseData))
+		return res, fmt.Errorf("request error: %s", string(responseData))
 	}
 
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
@@ -112,15 +114,15 @@ func MakeAPIrequest(j *Client, r *http.Request, v interface{}) error {
 	case "text/xml", "application/xml":
 		if err = xml.NewDecoder(res.Body).Decode(&v); err != nil {
 			// TODO: return a string or something
-			return errors.Wrapf(err, "response was successful but error occured decoding response body of type %s", t)
+			return res, errors.Wrapf(err, "response was successful but error occured decoding response body of type %s", t)
 		}
 	case "text/json", "application/json", "text/plain":
 		if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
-			return errors.Wrapf(err, "response was successful but error occured error decoding response body of type %s", t)
+			return res, errors.Wrapf(err, "response was successful but error occured error decoding response body of type %s", t)
 		}
 	default:
-		return errors.Wrapf(err, "response was successful but error occured recieved unexpected response body of type %s", t)
+		return res, errors.Wrapf(err, "response was successful but error occured recieved unexpected response body of type %s", t)
 	}
 
-	return nil
+	return res, nil
 }

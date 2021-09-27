@@ -21,7 +21,7 @@ func (j *Service) Policies() ([]BasicPolicyInformation, error) {
 		return nil, errors.Wrap(err, "error building Jamf policies query request")
 	}
 	res := Policies{}
-	if err := client.MakeAPIrequest(j.client,req, &res); err != nil {
+	if _, err := client.MakeAPIrequest(j.client, req, &res); err != nil {
 		return nil, errors.Wrapf(err, "unable to query available policies from %s", j.client.Endpoint)
 	}
 	return res.List, nil
@@ -108,7 +108,7 @@ func (j *Service) CreatePolicy(content *PolicyContents) (*PolicyContents, error)
 	}
 	res := PolicyContents{}
 
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
+	if _, err := client.MakeAPIrequest(j.client, req, &res); err != nil {
 		return nil, errors.Wrapf(err, "unable to process JAMF creation request for policy: %v (%s)", content.General.Name, ep)
 	}
 

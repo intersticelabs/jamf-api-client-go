@@ -166,7 +166,7 @@ func TestQueryComputer(t *testing.T) {
 	defer testServer.Close()
 	j, err := jamf.NewService(testServer.URL, "fake-username", "mock-password-cool", nil)
 	assert.Nil(t, err)
-	computers, err := j.List()
+	computers, _, err := j.List()
 	assert.Nil(t, err)
 	assert.NotNil(t, computers)
 	assert.Equal(t, 6, len(computers))
@@ -179,7 +179,7 @@ func TestQuerySpecificComputer(t *testing.T) {
 	defer testServer.Close()
 	j, err := jamf.NewService(testServer.URL, "fake-username", "mock-password-cool", nil)
 	assert.Nil(t, err)
-	computer, err := j.GetById(82)
+	computer, _, err := j.GetById(82)
 	assert.Nil(t, err)
 	// General Info
 	assert.Equal(t, 82, computer.General.Id)

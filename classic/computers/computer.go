@@ -18,32 +18,36 @@ type ListResponse struct {
 }
 
 // Computers returns all enrolled computer devices
-func (j *Service) List() ([]ComputerNameId, error) {
+func (j *Service) List() (computers []ComputerNameId, response *http.Response, err error) {
 	req, err := http.NewRequestWithContext(context.Background(), "GET", j.client.Endpoint, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "error building JAMF computer query request")
+		return nil, nil, errors.Wrap(err, "error building JAMF computer query request")
 	}
 
 	res := &ListResponse{}
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
-		return nil, errors.Wrapf(err, "unable to query enrolled computers from %s", j.client.Endpoint)
+	if response, err = client.MakeAPIrequest(j.client, req, &res); err != nil {
+		err = errors.Wrapf(err, "unable to query enrolled computers from %s", j.client.Endpoint)
+		return
 	}
-	return res.Computers, nil
+	computers = res.Computers
+	return
 }
 
 // Computers returns all enrolled computer devices
-func (j *Service) ListWithBasicInfo() ([]BasicComputerInfo, error) {
+func (j *Service) ListWithBasicInfo() (result []BasicComputerInfo, response *http.Response, err error) {
 	ep := fmt.Sprintf("%s/subset/basic", j.client.Endpoint)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "error building JAMF computer query request")
+		err = errors.Wrap(err, "error building JAMF computer query request")
+		return
 	}
 
 	res := &Computers{}
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
-		return nil, errors.Wrapf(err, "unable to query enrolled computers from %s", ep)
+	if response, err = client.MakeAPIrequest(j.client, req, &res); err != nil {
+		err = errors.Wrapf(err, "unable to query enrolled computers from %s", ep)
 	}
-	return res.List, nil
+	result = res.List
+	return
 }
 
 type getByIdResponse struct {
@@ -51,31 +55,37 @@ type getByIdResponse struct {
 }
 
 // GetById returns the details for a specific computer given its Id
-func (j *Service) GetById(identifier int) (*Computer, error) {
+func (j *Service) GetById(identifier int) (result *Computer, response *http.Response, err error) {
 	ep := j.client.IdEndpoint(identifier)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error building JAMF computer request for computer: %v (%s)", identifier, ep)
+		err = errors.Wrapf(err, "error building JAMF computer request for computer: %v (%s)", identifier, ep)
+		return
 	}
 
 	res := &getByIdResponse{}
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
-		return nil, errors.Wrapf(err, "unable to query enrolled computer for computer: %v (%s)", identifier, ep)
+	if response, err = client.MakeAPIrequest(j.client, req, &res); err != nil {
+		err = errors.Wrapf(err, "unable to query enrolled computer for computer: %v (%s)", identifier, ep)
+		return
 	}
-	return &res.Computer, nil
+	result = &res.Computer
+	return
 }
 
 // GetById returns the details for a specific computer given its Id
-func (j *Service) GetHardwareByUid(uid string) (*HardwareInformation, error) {
+func (j *Service) GetHardwareByUid(uid string) (result *HardwareInformation, response *http.Response, err error) {
 	ep := fmt.Sprintf("%s/serialnumber/%s/subset/Hardware", j.client.Endpoint, uid)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error building JAMF computer request for computer: %v (%s)", uid, ep)
+		err = errors.Wrapf(err, "error building JAMF computer request for computer: %v (%s)", uid, ep)
+		return
 	}
 
 	res := &getByIdResponse{}
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
-		return nil, errors.Wrapf(err, "unable to query enrolled computer for computer: %v (%s)", uid, ep)
+	if response, err = client.MakeAPIrequest(j.client, req, &res); err != nil {
+		err = errors.Wrapf(err, "unable to query enrolled computer for computer: %v (%s)", uid, ep)
+		return
 	}
-	return &res.Computer.Hardware, nil
+	result = &res.Computer.Hardware
+	return
 }

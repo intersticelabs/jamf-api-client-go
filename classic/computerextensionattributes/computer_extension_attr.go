@@ -33,7 +33,7 @@ func (j *Service) ComputerExtensionAttributes() ([]ComputerExtensionAttribute, e
 	}
 
 	res := &ComputerExtensionAttributes{}
-	if err := client.MakeAPIrequest(j.client, req, &res); err != nil {
+	if _, err := client.MakeAPIrequest(j.client, req, &res); err != nil {
 		return nil, errors.Wrapf(err, "unable to query computer extension attribute from %s", j.client.Endpoint)
 	}
 	return res.List, nil
