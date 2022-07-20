@@ -6,7 +6,7 @@ package main
 //	"os"
 //	"time"
 //
-//	jamf "github.com/intersticelabs/jamf-api-client-go/classic/computerextensionattributes"
+//	jamf "github.com/trustero/jamf-api-client-go/classic/computerextensionattributes"
 //)
 //
 //func checkAndHandleErr(err error) {

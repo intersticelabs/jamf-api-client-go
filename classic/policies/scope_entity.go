@@ -3,7 +3,7 @@
 
 package policies
 
-import "github.com/intersticelabs/jamf-api-client-go/classic/computers"
+import "github.com/trustero/jamf-api-client-go/classic/computers"
 
 // Scope represents the scope of a related Jamf configuration setting or Policy
 type Scope struct {

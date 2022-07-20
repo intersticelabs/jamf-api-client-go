@@ -6,7 +6,7 @@ package computers
 import (
 	"context"
 	"fmt"
-	"github.com/intersticelabs/jamf-api-client-go/classic/client"
+	"github.com/trustero/jamf-api-client-go/classic/client"
 	"net/http"
 
 	"github.com/pkg/errors"

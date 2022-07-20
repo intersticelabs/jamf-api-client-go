@@ -20,7 +20,7 @@ To see what functionality is available in the current API client release, please
 ## Usage
 
 ```go
-import  jamf "github.com/intersticelabs/jamf-api-client-go/classic"
+import  jamf "github.com/trustero/jamf-api-client-go/classic"
 
 // You can optionally setup a custom HTTP client to use which can
 // include any settings you desire. If you would like to use the 

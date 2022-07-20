@@ -7,13 +7,13 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/intersticelabs/jamf-api-client-go/classic/computers"
+	"github.com/trustero/jamf-api-client-go/classic/computers"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic/policies"
+	jamf "github.com/trustero/jamf-api-client-go/classic/policies"
 	"github.com/stretchr/testify/assert"
 )
 

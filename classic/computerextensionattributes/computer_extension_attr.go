@@ -5,7 +5,7 @@ package computerextensionattributes
 
 import (
 	"context"
-	"github.com/intersticelabs/jamf-api-client-go/classic/client"
+	"github.com/trustero/jamf-api-client-go/classic/client"
 	"github.com/pkg/errors"
 	"net/http"
 )

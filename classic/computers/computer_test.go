@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic/computers"
+	jamf "github.com/trustero/jamf-api-client-go/classic/computers"
 	"github.com/stretchr/testify/assert"
 )
 
