@@ -13,8 +13,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/trustero/jamf-api-client-go/classic/policies"
 	"github.com/stretchr/testify/assert"
+	jamf "github.com/trustero/jamf-api-client-go/classic/policies"
 )
 
 var POLICIES_API_BASE_ENDPOINT = "/JSSResource/policies"

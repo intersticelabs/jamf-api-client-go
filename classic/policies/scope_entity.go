@@ -7,14 +7,14 @@ import "github.com/trustero/jamf-api-client-go/classic/computers"
 
 // Scope represents the scope of a related Jamf configuration setting or Policy
 type Scope struct {
-	AllComputers   bool                  `json:"all_computers" xml:"all_computers,omitempty"`
-	Computers      []*computers.BasicComputerInfo  `json:"computers" xml:"computers>computer,omitempty"`
-	ComputerGroups []*computers.ComputerGroup      `json:"computer_groups" xml:"computer_groups>computer_group,omitempty"`
-	Buildings      []*Building           `json:"buildings" xml:"buildings,omitempty"`
-	Departments    []*Department         `json:"departments" xml:"departments,omitempty"`
-	LimitToUsers   *UserGroupLimitations `json:"limit_to_users" xml:"limit_to_users,omitempty"`
-	Limitations    *Limitations          `json:"limitations" xml:"limitations,omitempty"`
-	Exclusions     *Exclusions           `json:"exclusions" xml:"exclusions,omitempty"`
+	AllComputers   bool                           `json:"all_computers" xml:"all_computers,omitempty"`
+	Computers      []*computers.BasicComputerInfo `json:"computers" xml:"computers>computer,omitempty"`
+	ComputerGroups []*computers.ComputerGroup     `json:"computer_groups" xml:"computer_groups>computer_group,omitempty"`
+	Buildings      []*Building                    `json:"buildings" xml:"buildings,omitempty"`
+	Departments    []*Department                  `json:"departments" xml:"departments,omitempty"`
+	LimitToUsers   *UserGroupLimitations          `json:"limit_to_users" xml:"limit_to_users,omitempty"`
+	Limitations    *Limitations                   `json:"limitations" xml:"limitations,omitempty"`
+	Exclusions     *Exclusions                    `json:"exclusions" xml:"exclusions,omitempty"`
 }
 
 // Building represents a building configured in Jamf that a setting can be scoped to
@@ -73,9 +73,9 @@ type Limitations struct {
 type Exclusions struct {
 	Computers       []*computers.BasicComputerInfo `json:"computers"`
 	ComputerGroups  []*computers.ComputerGroup     `json:"computer_groups"`
-	Buildings       []*Building          `json:"buildings"`
-	Departments     []*Department        `json:"departments"`
-	Users           []*User              `json:"users"`
-	UserGroups      []*UserGroup         `json:"user_groups"`
-	NetworkSegments []*NetworkSegment    `json:"network_segments"`
+	Buildings       []*Building                    `json:"buildings"`
+	Departments     []*Department                  `json:"departments"`
+	Users           []*User                        `json:"users"`
+	UserGroups      []*UserGroup                   `json:"user_groups"`
+	NetworkSegments []*NetworkSegment              `json:"network_segments"`
 }

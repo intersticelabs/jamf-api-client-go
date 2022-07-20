@@ -9,8 +9,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/trustero/jamf-api-client-go/classic"
 	"github.com/stretchr/testify/assert"
+	jamf "github.com/trustero/jamf-api-client-go/classic"
 )
 
 type MockResponse struct {

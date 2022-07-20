@@ -77,18 +77,18 @@ type HardwareInformation struct {
 	ServicePack                 string    `json:"service_pack"`
 	ProcessorType               string    `json:"processor_type"`
 	ProcessorArchitecture       string    `json:"processor_architecture"`
-	ProcessorSpeed              int      `json:"processor_speed"`
-	ProcessorSpeedMhz           int      `json:"processor_speed_mhz"`
-	NumberProcessors            int      `json:"number_processors"`
-	NumberCores                 int      `json:"number_cores"`
-	TotalRam                    int64    `json:"total_ram"`
-	TotalRamMb                  int64    `json:"total_ram_mb"`
+	ProcessorSpeed              int       `json:"processor_speed"`
+	ProcessorSpeedMhz           int       `json:"processor_speed_mhz"`
+	NumberProcessors            int       `json:"number_processors"`
+	NumberCores                 int       `json:"number_cores"`
+	TotalRam                    int64     `json:"total_ram"`
+	TotalRamMb                  int64     `json:"total_ram_mb"`
 	BootRom                     string    `json:"boot_rom"`
-	BusSpeed                    int      `json:"bus_speed"`
-	BusSpeedMhz                 int      `json:"bus_speed_mhz"`
-	BatteryCapacity             int      `json:"battery_capacity"`
-	CacheSize                   int64    `json:"cache_size"`
-	CacheSizeKb                 int64    `json:"cache_size_kb"`
+	BusSpeed                    int       `json:"bus_speed"`
+	BusSpeedMhz                 int       `json:"bus_speed_mhz"`
+	BatteryCapacity             int       `json:"battery_capacity"`
+	CacheSize                   int64     `json:"cache_size"`
+	CacheSizeKb                 int64     `json:"cache_size_kb"`
 	SIPStatus                   string    `json:"sip_status"`
 	GatekeeperStatus            string    `json:"gatekeeper_status"`
 	XProtectVersion             string    `json:"xprotect_version"`
@@ -107,8 +107,8 @@ type Device struct {
 	Model           string      `json:"model"`
 	Revision        string      `json:"revision"`
 	SerialNumber    string      `json:"serial_number"`
-	Size            int64      `json:"size"`
-	DriveCapacityMB int64      `json:"drive_capacity_mb"`
+	Size            int64       `json:"size"`
+	DriveCapacityMB int64       `json:"drive_capacity_mb"`
 	ConnectionType  string      `json:"connection_type"`
 	SmartStatus     string      `json:"smart_status"`
 	Partition       []Partition `json:"partition"`
@@ -117,13 +117,13 @@ type Partition struct {
 	Name                 string `json:"name"`
 	Size                 int64  `json:"size"`
 	PartitionType        string `json:"type"`
-	PartitionCapacityMB  int64 `json:"partition_capacity_mb"`
-	PercentageFull       int   `json:"percentage_full"`
+	PartitionCapacityMB  int64  `json:"partition_capacity_mb"`
+	PercentageFull       int    `json:"percentage_full"`
 	FilevaultStatus      string `json:"filevault_status"`
-	FilevaultPercent     int   `json:"filevault_percent"`
+	FilevaultPercent     int    `json:"filevault_percent"`
 	Filevault2Status     string `json:"filevault2_status"`
-	Filevaul2tPercent    int   `json:"filevault2_percent"`
-	BootDriveAvailableMB int64 `json:"boot_drive_available_mb"`
+	Filevaul2tPercent    int    `json:"filevault2_percent"`
+	BootDriveAvailableMB int64  `json:"boot_drive_available_mb"`
 	LvgUUID              string `json:"lvg_uuid"`
 	LvUUID               string `json:"lv_uuid"`
 	PvUUID               string `json:"pv_uuid"`

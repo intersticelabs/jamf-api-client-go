@@ -6,6 +6,7 @@ import (
 )
 
 const domain = "policies"
+
 type Service struct {
 	client *client.Client
 }

@@ -32,4 +32,3 @@ func EndpointBuilder(endpoint string, context string, identifier interface{}) (s
 	}
 	return ep, nil
 }
-
