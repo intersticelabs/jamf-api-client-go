@@ -1,11 +1,12 @@
 package policies
 
 import (
-	"github.com/intersticelabs/jamf-api-client-go/classic/client"
+	"github.com/trustero/jamf-api-client-go/classic/client"
 	"net/http"
 )
 
 const domain = "policies"
+
 type Service struct {
 	client *client.Client
 }

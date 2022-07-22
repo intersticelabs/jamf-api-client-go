@@ -12,8 +12,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic/computerextensionattributes"
 	"github.com/stretchr/testify/assert"
+	jamf "github.com/trustero/jamf-api-client-go/classic/computerextensionattributes"
 )
 
 var COMPUTER_EXT_ATTR_API_BASE_ENDPOINT = "/JSSResource/computerextensionattributes"

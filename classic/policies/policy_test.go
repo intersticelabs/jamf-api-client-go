@@ -7,14 +7,14 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/intersticelabs/jamf-api-client-go/classic/computers"
+	"github.com/trustero/jamf-api-client-go/classic/computers"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic/policies"
 	"github.com/stretchr/testify/assert"
+	jamf "github.com/trustero/jamf-api-client-go/classic/policies"
 )
 
 var POLICIES_API_BASE_ENDPOINT = "/JSSResource/policies"

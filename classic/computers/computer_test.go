@@ -8,8 +8,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	jamf "github.com/intersticelabs/jamf-api-client-go/classic/computers"
 	"github.com/stretchr/testify/assert"
+	jamf "github.com/trustero/jamf-api-client-go/classic/computers"
 )
 
 var COMPUTER_API_BASE_ENDPOINT = "/JSSResource/computers"
