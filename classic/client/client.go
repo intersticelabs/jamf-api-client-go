@@ -21,6 +21,7 @@ const (
 	ComputersContext       = "computers"
 	computerExtAttrContext = "computerextensionattributes"
 	policiesContext        = "policies"
+	AccountsContext        = "accounts"
 )
 
 // Client represents the interface used to communicate with
@@ -80,6 +81,16 @@ func (j *Client) NameEndpoint(identifier string) string {
 // EndpointBuilder can be utilized to query a specific API context via Id
 func (j *Client) IdEndpoint(identifier int) string {
 	return fmt.Sprintf("%s/id/%d", j.Endpoint, identifier)
+}
+
+// EndpointBuilder can be utilized to query a specific API context via UserId
+func (j *Client) UserEndpoint(identifier int) string {
+	return fmt.Sprintf("%s/userid/%d", j.Endpoint, identifier)
+}
+
+// EndpointBuilder can be utilized to query a specific API context via GroupId
+func (j *Client) GroupEndpoint(identifier int) string {
+	return fmt.Sprintf("%s/groupid/%d", j.Endpoint, identifier)
 }
 
 func MakeAPIrequest(j *Client, r *http.Request, v interface{}) (*http.Response, error) {
