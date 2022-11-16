@@ -47,7 +47,7 @@ type JamfUser struct {
 }
 
 type JamfGroupResp struct {
-	Group JamfGroup `json:"account,omitempty"`
+	Group JamfGroup `json:"group,omitempty"`
 }
 
 type JamfGroup struct {
