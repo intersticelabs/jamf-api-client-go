@@ -28,7 +28,7 @@ func (j *Service) List() (accounts *JamfAccountsId, response *http.Response, err
 	return
 }
 
-// GetByUserId returns the details for a specific user given its Id
+// GetByUserId returns the name, id for a specific user given its Id
 func (j *Service) GetByUserId(identifier int) (user *JamfUser, response *http.Response, err error) {
 	ep := j.client.UserEndpoint(identifier)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
@@ -46,7 +46,7 @@ func (j *Service) GetByUserId(identifier int) (user *JamfUser, response *http.Re
 	return
 }
 
-// GetByGroupId returns the details for a specific user given its Id
+// GetByGroupId returns the name, id for a specific group given its Id
 func (j *Service) GetByGroupId(identifier int) (group *JamfGroup, response *http.Response, err error) {
 	ep := j.client.GroupEndpoint(identifier)
 	req, err := http.NewRequestWithContext(context.Background(), "GET", ep, nil)
