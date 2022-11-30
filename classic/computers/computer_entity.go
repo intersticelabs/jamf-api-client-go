@@ -72,37 +72,44 @@ type HardwareInformation struct {
 	OSName                      string    `json:"os_name"`
 	OSVersion                   string    `json:"os_version"`
 	OSBuild                     string    `json:"os_build"`
-	MasterPasswordSet           bool      `json:"master_password_set"`
+	SoftwareUpdateDeviceID      string    `json:"software_update_device_id"`
 	ActiveDirectoryStatus       string    `json:"active_directory_status"`
 	ServicePack                 string    `json:"service_pack"`
 	ProcessorType               string    `json:"processor_type"`
+	IsAppleSilicon              bool      `json:"is_apple_silicon"`
 	ProcessorArchitecture       string    `json:"processor_architecture"`
 	ProcessorSpeed              int       `json:"processor_speed"`
 	ProcessorSpeedMhz           int       `json:"processor_speed_mhz"`
 	NumberProcessors            int       `json:"number_processors"`
 	NumberCores                 int       `json:"number_cores"`
-	TotalRam                    int64     `json:"total_ram"`
-	TotalRamMb                  int64     `json:"total_ram_mb"`
+	TotalRAM                    int       `json:"total_ram"`
+	TotalRAMMb                  int       `json:"total_ram_mb"`
 	BootRom                     string    `json:"boot_rom"`
 	BusSpeed                    int       `json:"bus_speed"`
 	BusSpeedMhz                 int       `json:"bus_speed_mhz"`
 	BatteryCapacity             int       `json:"battery_capacity"`
-	CacheSize                   int64     `json:"cache_size"`
-	CacheSizeKb                 int64     `json:"cache_size_kb"`
-	SIPStatus                   string    `json:"sip_status"`
+	CacheSize                   int       `json:"cache_size"`
+	CacheSizeKb                 int       `json:"cache_size_kb"`
+	AvailableRAMSlots           int       `json:"available_ram_slots"`
+	OpticalDrive                string    `json:"optical_drive"`
+	NicSpeed                    string    `json:"nic_speed"`
+	SmcVersion                  string    `json:"smc_version"`
+	BleCapable                  bool      `json:"ble_capable"`
+	SupportsIosAppInstalls      bool      `json:"supports_ios_app_installs"`
+	SipStatus                   string    `json:"sip_status"`
 	GatekeeperStatus            string    `json:"gatekeeper_status"`
 	XProtectVersion             string    `json:"xprotect_version"`
 	InstitutionalRecoveryKey    string    `json:"institutional_recovery_key"`
-	FilevaultUsers              []string  `json:"filevault2_users"`
 	DiskEncryptionConfiguration string    `json:"disk_encryption_configuration"`
+	FilevaultUsers              []string  `json:"filevault2_users"`
 	Storage                     []Storage `json:"storage"`
 }
 
-type Storage struct {
-	Device Device `json:"device"`
-}
+//type Storage struct {
+//	Device Device `json:"device"`
+//}
 
-type Device struct {
+type Storage struct {
 	Disk            string      `json:"disk"`
 	Model           string      `json:"model"`
 	Revision        string      `json:"revision"`
@@ -111,7 +118,7 @@ type Device struct {
 	DriveCapacityMB int64       `json:"drive_capacity_mb"`
 	ConnectionType  string      `json:"connection_type"`
 	SmartStatus     string      `json:"smart_status"`
-	Partition       []Partition `json:"partition"`
+	Partition       []Partition `json:"partitions"`
 }
 type Partition struct {
 	Name                 string `json:"name"`
