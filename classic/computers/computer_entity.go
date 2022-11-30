@@ -82,8 +82,8 @@ type HardwareInformation struct {
 	ProcessorSpeedMhz           int       `json:"processor_speed_mhz"`
 	NumberProcessors            int       `json:"number_processors"`
 	NumberCores                 int       `json:"number_cores"`
-	TotalRAM                    int       `json:"total_ram"`
-	TotalRAMMb                  int       `json:"total_ram_mb"`
+	TotalRAM                    int64     `json:"total_ram"`
+	TotalRAMMb                  int64     `json:"total_ram_mb"`
 	BootRom                     string    `json:"boot_rom"`
 	BusSpeed                    int       `json:"bus_speed"`
 	BusSpeedMhz                 int       `json:"bus_speed_mhz"`
