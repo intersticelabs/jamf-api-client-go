@@ -38,6 +38,7 @@ type Computer struct {
 	ExtensionAttributes []ExtensionAttributes    `json:"extension_attributes"`
 	Groups              GroupInformation         `json:"groups_accounts"`
 	ConfigProfiles      []ConfigProfile          `json:"configuration_profiles"`
+	Security            SecurityInformation      `json:"security,omitempty"`
 }
 
 // GeneralInformation holds basic information associated with Jamf device
@@ -187,4 +188,11 @@ type ConfigProfile struct {
 	Name      string `json:"name"`
 	UUID      string `json:"uuid"`
 	Removable bool   `json:"is_removable"`
+}
+type SecurityInformation struct {
+	ActivationLock      bool   `json:"activation_lock,omitempty"`
+	RecoveryLockEnabled bool   `json:"recovery_lock_enabled,omitempty"`
+	SecureBootLevel     string `json:"secure_boot_level,omitempty"`
+	ExternalBootLevel   string `json:"external_boot_level,omitempty"`
+	FirewallEnabled     bool   `json:"firewall_enabled,omitempty"`
 }
